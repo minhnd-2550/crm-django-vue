@@ -70,7 +70,7 @@ export default {
   },
   async mounted() {
     await this.getPubKey();
-
+    // eslint-disable-next-line
     this.stripe = Stripe(this.pub_key);
   },
   methods: {

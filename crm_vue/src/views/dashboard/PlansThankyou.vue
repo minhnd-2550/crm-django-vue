@@ -14,7 +14,9 @@
 
 <script>
 import axios from "axios";
+
 import { toast } from "bulma-toast";
+
 export default {
   name: "PlansThankyou",
   data() {
@@ -27,6 +29,7 @@ export default {
       })
       .then((response) => {
         console.log(response);
+
         toast({
           message: "The plan was changed!",
           type: "is-success",
@@ -35,6 +38,7 @@ export default {
           duration: 2000,
           position: "bottom-right",
         });
+
         this.$store.commit("setTeam", {
           id: response.data.id,
           name: response.data.name,
@@ -52,6 +56,7 @@ export default {
           duration: 2000,
           position: "bottom-right",
         });
+
         console.log("Error", error);
       });
   },

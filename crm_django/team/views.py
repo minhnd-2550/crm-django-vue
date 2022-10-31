@@ -1,9 +1,9 @@
 import json
 from rest_framework.serializers import Serializer
-
 import stripe
 
 from datetime import datetime
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.http import Http404, HttpResponse
@@ -17,7 +17,6 @@ from stripe import webhook
 from stripe.api_resources import line_item
 
 from .models import Team, Plan
-
 from .serializers import TeamSerializer, UserSerializer
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -26,7 +25,7 @@ class TeamViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(members__in=[self.request.user]).first()
-
+    
     def perform_create(self, serializer):
         obj = serializer.save(created_by=self.request.user)
         obj.members.add(self.request.user)
@@ -38,12 +37,12 @@ class UserDetail(APIView):
             return User.objects.get(pk=pk)
         except User.DoesNotExist:
             raise Http404
-
+    
     def get(self, request, pk, format=None):
         user = self.get_object(pk)
         serializer = UserSerializer(user)
         return Response(serializer.data)
-
+    
     def put(self, request, pk, format=None):
         user = self.get_object(pk)
         serializer = UserSerializer(user, data=request.data)
@@ -78,7 +77,7 @@ def upgrade_plan(request):
         plan = Plan.objects.get(name='Small team')
     elif plan == 'bigteam':
         plan = Plan.objects.get(name='Big team')
-
+    
     team.plan = plan
     team.save()
 
@@ -137,7 +136,7 @@ def cancel_plan(request):
         stripe.Subscription.delete(team.stripe_subscription_id)
     except Exception:
         return Response({'error': 'Something went wrong. Please try again'})
-
+    
     serializer = TeamSerializer(team)
     return Response(serializer.data)
 
@@ -151,7 +150,7 @@ def create_checkout_session(request):
         price_id = settings.STRIPE_PRICE_ID_SMALL_TEAM
     else:
         price_id = settings.STRIPE_PRICE_ID_BIG_TEAM
-
+    
     team = Team.objects.filter(members__in=[request.user]).first()
 
     try:
@@ -190,7 +189,7 @@ def stripe_webhook(request):
         return HttpResponse(status=400)
     except stripe.error.SignaturVerificationError as e:
         return HttpResponse(status=400)
-
+    
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         team = Team.objects.get(pk=session.get('client_reference_id'))

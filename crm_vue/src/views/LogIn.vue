@@ -46,6 +46,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   name: "LogIn",
   data() {
@@ -58,20 +59,25 @@ export default {
   methods: {
     async submitForm() {
       this.$store.commit("setIsLoading", true);
+
       axios.defaults.headers.common["Authorization"] = "";
       localStorage.removeItem("token");
+
       const formData = {
         username: this.username,
         password: this.password,
       };
+
       await axios
         .post("/api/v1/token/login/", formData)
         .then((response) => {
           const token = response.data.auth_token;
+
           this.$store.commit("setToken", token);
+
           axios.defaults.headers.common["Authorization"] = "Token " + token;
+
           localStorage.setItem("token", token);
-          this.$router.push("/dashboard/my-account");
         })
         .catch((error) => {
           if (error.response) {
@@ -82,6 +88,7 @@ export default {
             this.errors.push("Something went wrong. Please try again!");
           }
         });
+
       await axios
         .get("/api/v1/users/me")
         .then((response) => {
@@ -89,16 +96,19 @@ export default {
             id: response.data.id,
             username: response.data.username,
           });
+
           localStorage.setItem("username", response.data.username);
           localStorage.setItem("userid", response.data.id);
         })
         .catch((error) => {
           console.log(error);
         });
+
       await axios
         .get("/api/v1/teams/get_my_team/")
         .then((response) => {
           console.log(response.data);
+
           this.$store.commit("setTeam", {
             id: response.data.id,
             name: response.data.name,
@@ -106,11 +116,13 @@ export default {
             max_leads: response.data.plan.max_leads,
             max_clients: response.data.plan.max_clients,
           });
+
           this.$router.push("/dashboard/my-account");
         })
         .catch((error) => {
           console.log(error);
         });
+
       this.$store.commit("setIsLoading", false);
     },
   },

@@ -23,7 +23,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     pagination_class = ClientPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', 'contact_person')
-
+    
     def perform_create(self, serializer):
         team = Team.objects.filter(members__in=[self.request.user]).first()
 
@@ -59,7 +59,7 @@ def convert_lead_to_client(request):
         lead = Lead.objects.filter(team=team).get(pk=lead_id)
     except Lead.DoesNotExist:
         raise Http404
-
+    
     client = Client.objects.create(team=team, name=lead.company, contact_person=lead.contact_person, email=lead.email, phone=lead.phone, website=lead.website, created_by=request.user)
 
     return Response()

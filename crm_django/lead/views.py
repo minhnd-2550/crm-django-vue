@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-
 from django.shortcuts import render
 
 from rest_framework import viewsets, filters
@@ -8,6 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework.pagination import PageNumberPagination
 
 from team.models import Team
+
 from .models import Lead
 from .serializers import LeadSerializer
 
@@ -20,12 +20,12 @@ class LeadViewSet(viewsets.ModelViewSet):
     pagination_class = LeadPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('company', 'contact_person')
-
+    
     def perform_create(self, serializer):
         team = Team.objects.filter(members__in=[self.request.user]).first()
 
         serializer.save(team=team, created_by=self.request.user)
-
+    
     def perform_update(self, serializer):
         obj = self.get_object()
 

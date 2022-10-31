@@ -17,7 +17,6 @@ export default createStore({
       max_clients: 0,
     },
   },
-  getters: {},
   mutations: {
     initializeStore(state) {
       if (localStorage.getItem("token")) {
@@ -61,9 +60,9 @@ export default createStore({
 
       localStorage.setItem("team_id", team.id);
       localStorage.setItem("team_name", team.name);
-      localStorage.setItem('team_plan', team.plan)
-      localStorage.setItem('team_max_leads', team.max_leads)
-      localStorage.setItem('team_max_clients', team.max_clients)
+      localStorage.setItem("team_plan", team.plan);
+      localStorage.setItem("team_max_leads", team.max_leads);
+      localStorage.setItem("team_max_clients", team.max_clients);
     },
   },
   actions: {},

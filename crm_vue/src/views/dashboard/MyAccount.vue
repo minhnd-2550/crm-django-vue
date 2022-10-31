@@ -2,8 +2,9 @@
   <div class="container">
     <div class="columns is-multiline">
       <div class="column is-12">
-        <h1 class="title">My Acccount</h1>
+        <h1 class="title">My account</h1>
       </div>
+
       <div class="column is-12">
         <div class="buttons">
           <router-link
@@ -21,6 +22,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
   name: "MyAccount",
   methods: {
@@ -41,6 +43,7 @@ export default {
       localStorage.removeItem("team_name");
       localStorage.removeItem("team_id");
       this.$store.commit("removeToken");
+
       this.$router.push("/");
     },
   },

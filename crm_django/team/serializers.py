@@ -4,6 +4,16 @@ from rest_framework import serializers
 
 from .models import Team, Plan
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+        )
+
 class PlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Plan
@@ -13,16 +23,6 @@ class PlanSerializer(serializers.ModelSerializer):
             "max_leads",
             "max_clients",
             "price"
-        )
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = (
-            "id",
-            "username",
-            "first_name",
-            "last_name",
         )
 
 class TeamSerializer(serializers.ModelSerializer):

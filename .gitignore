@@ -1,0 +1,5 @@
+crm_django/db.sqlite3
+crm_django/*.pyc
+crm_django/*/*.pyc
+crm_django/*/*/*.pyc
+crm_django/*/*/*/*.pyc

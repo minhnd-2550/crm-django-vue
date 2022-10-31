@@ -58,7 +58,9 @@
 
 <script>
 import axios from "axios";
+
 import { toast } from "bulma-toast";
+
 export default {
   name: "SignUp",
   data() {
@@ -72,21 +74,27 @@ export default {
   methods: {
     async submitForm() {
       this.errors = [];
+
       if (this.username === "") {
         this.errors.push("The username is missing");
       }
+
       if (this.password1 === "") {
         this.errors.push("The password is too short");
       }
+
       if (this.password1 !== this.password2) {
         this.errors.push("The password are not matching");
       }
+
       if (!this.errors.length) {
         this.$store.commit("setIsLoading", true);
+
         const formData = {
           username: this.username,
           password: this.password1,
         };
+
         await axios
           .post("/api/v1/users/", formData)
           .then(() => {
@@ -98,6 +106,7 @@ export default {
               duration: 2000,
               position: "bottom-right",
             });
+
             this.$router.push("/log-in");
           })
           .catch((error) => {

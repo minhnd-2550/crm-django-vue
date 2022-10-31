@@ -25,22 +25,6 @@
             </div>
           </div>
         </form>
-        <!-- <div class="notification is-danger" v-else>
-          You have reached the top of your limitations. Please upgrade!
-        </div> -->
-
-        <hr />
-
-        <form @submit.prevent="getLeads">
-          <div class="field has-addons">
-            <div class="control">
-              <input type="text" class="input" v-model="query" />
-            </div>
-            <div class="control">
-              <button class="button is-success">Search</button>
-            </div>
-          </div>
-        </form>
       </div>
 
       <div class="column is-12">

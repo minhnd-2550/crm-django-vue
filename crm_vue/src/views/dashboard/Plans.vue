@@ -72,9 +72,9 @@ export default {
     };
   },
   async mounted() {
-    await this.getPubKey();
-    // eslint-disable-next-line
-    this.stripe = Stripe(this.pub_key);
+    // await this.getPubKey();
+    // // eslint-disable-next-line
+    // this.stripe = Stripe(this.pub_key);
   },
   methods: {
     async getPubKey() {
@@ -124,18 +124,49 @@ export default {
         plan: plan,
       };
 
-      axios
-        .post("/api/v1/stripe/create_checkout_session/", data)
-        .then((response) => {
-          console.log(response);
+      // axios
+      //   .post("/api/v1/stripe/create_checkout_session/", data)
+      //   .then((response) => {
+      //     console.log(response);
 
-          return this.stripe.redirectToCheckout({
-            sessionId: response.data.sessionId,
+      //     return this.stripe.redirectToCheckout({
+      //       sessionId: response.data.sessionId,
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     console.log("Error:", error);
+      //   });
+
+      await axios
+        .post(`/api/v1/teams/upgrade_plan/`, data)
+        .then((response) => {
+          console.log("Upgraded plan");
+
+          console.log(response.data);
+
+          this.$store.commit("setTeam", {
+            id: response.data.id,
+            name: response.data.name,
+            plan: response.data.plan.name,
+            max_leads: response.data.plan.max_leads,
+            max_clients: response.data.plan.max_clients,
           });
+
+          toast({
+            message: "The plan was changed!",
+            type: "is-success",
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: "bottom-right",
+          });
+
+          this.$router.push("/dashboard/team");
         })
         .catch((error) => {
-          console.log("Error:", error);
+          console.log(error);
         });
+
       this.$store.commit("setIsLoading", false);
     },
   },

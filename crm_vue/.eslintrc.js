@@ -13,7 +13,7 @@ module.exports = {
     "vue/multi-word-component-names": [
       "error",
       {
-        ignores: ["Navbar", "Dashboard", "Leads", "Lead", "Team", "Client", "Clients"],
+        ignores: ["Navbar", "Dashboard", "Leads", "Lead", "Team", "Client", "Clients", "Plans"],
       },
     ],
   },

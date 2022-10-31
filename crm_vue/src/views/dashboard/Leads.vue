@@ -4,8 +4,27 @@
       <div class="column is-12">
         <h1 class="title">Leads</h1>
 
-        <router-link to="/dashboard/leads/add">Add lead</router-link>
+        <router-link
+          to="/dashboard/leads/add"
+          v-if="$store.state.team.max_leads > num_leads"
+          >Add lead</router-link
+        >
 
+        <div class="notification is-danger" v-else>
+          You have reached the top of your limitations. Please upgrade!
+        </div>
+        <hr />
+
+        <form @submit.prevent="getLeads">
+          <div class="field has-addons">
+            <div class="control">
+              <input type="text" class="input" v-model="query" />
+            </div>
+            <div class="control">
+              <button class="button is-success">Search</button>
+            </div>
+          </div>
+        </form>
         <!-- <div class="notification is-danger" v-else>
           You have reached the top of your limitations. Please upgrade!
         </div> -->
@@ -41,9 +60,10 @@
               <td>{{ lead.company }}</td>
               <td>{{ lead.contact_person }}</td>
               <td>
-                <template v-if="lead.assigned_to">{{
-                  lead.assigned_to.username
-                }}</template>
+                <template v-if="lead.assigned_to"
+                  >{{ lead.assigned_to.first_name }}
+                  {{ lead.assigned_to.last_name }}</template
+                >
               </td>
               <td>
                 <template v-if="lead.assigned_to"
@@ -117,20 +137,20 @@ export default {
         this.leads = response.data;
         this.num_leads = response.data.count;
       });
-      // await axios
-      //   .get(`/api/v1/leads/?page=${this.currentPage}&search=${this.query}`)
-      //   .then((response) => {
-      //     this.leads = response.data.results;
-      //     if (response.data.next) {
-      //       this.showNextButton = true;
-      //     }
-      //     if (response.data.previous) {
-      //       this.showPreviousButton = true;
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
+      await axios
+        .get(`/api/v1/leads/?page=${this.currentPage}&search=${this.query}`)
+        .then((response) => {
+          this.leads = response.data.results;
+          if (response.data.next) {
+            this.showNextButton = true;
+          }
+          if (response.data.previous) {
+            this.showPreviousButton = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       this.$store.commit("setIsLoading", false);
     },
   },

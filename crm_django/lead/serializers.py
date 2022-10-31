@@ -1,8 +1,9 @@
 from rest_framework import serializers
-
+from team.serializers import UserSerializer
 from .models import Lead
 
 class LeadSerializer(serializers.ModelSerializer):
+    assigned_to = UserSerializer(read_only=True)
     class Meta:
         model = Lead
         read_only_fields = (
@@ -21,4 +22,5 @@ class LeadSerializer(serializers.ModelSerializer):
             'estimated_value',
             'status',
             'priority',
+            'assigned_to',
         )

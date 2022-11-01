@@ -36,7 +36,7 @@
       <div class="column is-12">
         <h2 class="subtitle">Notes</h2>
         <router-link
-          :to="{ name: 'AddNote', params: { id: client.id } }"
+          :to="{ name: 'AddNote'}"
           class="button is-success mb-6"
           >Add note</router-link
         >

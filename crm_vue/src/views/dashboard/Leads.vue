@@ -49,12 +49,6 @@
                   {{ lead.assigned_to.last_name }}</template
                 >
               </td>
-              <td>
-                <template v-if="lead.assigned_to"
-                  >{{ lead.assigned_to.first_name }}
-                  {{ lead.assigned_to.last_name }}</template
-                >
-              </td>
               <td>{{ lead.status }}</td>
               <td>
                 <router-link :to="{ name: 'Lead', params: { id: lead.id } }"
